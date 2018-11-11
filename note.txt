@@ -1,0 +1,17 @@
+git status --> 깃 상태 알려줌 커밋이 얼마나 되었는지
+                뭐가 커밋되어있는지
+                
+jquery 
+  [target*="bc"] --> bc 가 포함되는 엘리먼트를 찾아내는 선택자
+
+pug 
+  태그 뒤에 . 은 이 다음은 텍스트로 인식함
+
+
+mongodb
+  use test; --> test 란 디비를 쓸거임 없으면 만듦
+  db.users.insert(( ))  users 란 이름으로 insert 
+
+moment js
+
+

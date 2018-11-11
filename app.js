@@ -4,30 +4,100 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
+var mongoose = require('mongoose');
+var flash = require('connect-flash');
+var session = require('express-session');
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+var favicon = require('serve-favicon');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+//var User =require('./models/user');
 
 var app = express();
+
+// Pug의 local에 moment라이브러리와 querystring 라이브러리를 사용할 수 있도록.
+app.locals.moment = require('moment');
+app.locals.querystring = require('querystring');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+//flash 사용  //router보다 더 높이 있어야함
+app.use(flash());
+
+app.use(methodOverride('_method', {methods: ['POST', 'GET']}));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+
+
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false}));
+
+
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
   indentedSyntax: true, // true = .sass and false = .scss
   sourceMap: true
 }));
-app.use(express.static(path.join(__dirname, 'public')));
+
+
+//session
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: 'long-long-long-secret-string-1313513tefgwdsvbjkvasd'
+}));
+
+
+// //사용자에게 flash 메세지를 전달
+app.use(function(req, res, next) {
+  res.locals.currentUser = req.session.user;
+  res.locals.flashMessages = req.flash();
+  next();
+});
+
+
+// //mongodb 연결 
+// const MongoClient = require('mongodb').MongoClient;
+// const uri = "mongodb+srv://chanhee:qwerty1202@cluster0-1ay2j.mongodb.net/test"
+// MongoClient.connect(uri,{useNewUrlParser: true}, function(err, client) {
+//    if(err) {
+//         console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
+//    }
+
+//    console.log('Connected...');
+//    const collection = client.db("test").collection("devices");
+//    // perform actions on the collection object
+//    client.close();
+// });
+
+mongoose.Promise = global.Promise;
+const uri = "mongodb+srv://chanhee:qwerty1202@cluster0-1ay2j.mongodb.net/test"
+mongoose.connect(uri, { useCreateIndex: true, useNewUrlParser: true}, function(err, client){
+  if(err){
+    console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
+  }
+  console.log('Connected...');
+});
+
+
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,23 @@
+extends ../layout
+
+block content
+  .container
+    h1.main-title 로그인
+    form(action="/users/login", method="post")
+      .form-group
+        label(for="email") Email Address 
+        input.form-control(type="email", name="email", placeholder="ooo@example.com")
+      .form-group
+        label(for="password") Password  
+        input.form-control(type="password", name="password", placeholder="password")
+      button.btn.btn-primary.btn-block(type="submit") login
+
+    form.form-inline.fa-pull-right.my-2(action="/")
+      button.btn.mx-1.border-rounded
+        i.fab.fa-facebook-square.fa-2x
+    form.form-inline.fa-pull-right.my-2(action="")
+      button.btn.mx-1.border-rounded
+        i.fab.fa-google-plus-square.fa-2x
+    form.form-inline.fa-pull-right.my-2(action="")
+      button.btn.mx-1.border-rounded
+        i.fab.fa-kickstarter.fa-2x
