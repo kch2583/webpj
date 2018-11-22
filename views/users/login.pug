@@ -3,7 +3,7 @@ extends ../layout
 block content
   .container
     h1.main-title 로그인
-    form(action="/users/login", method="post")
+    form(action="/login", method="post")
       .form-group
         label(for="email") Email Address 
         input.form-control(type="email", name="email", placeholder="ooo@example.com")

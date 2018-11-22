@@ -1,9 +1,18 @@
 extends ../layout
 
 block content
-  .container
+  .container.create_form
     h1.main-title 회원가입
     form(action='/users/create', method='POST')
+      .form-group.custom-control.custom-radio.custom-control-inline
+        input.form-control.custom-control-input(type="radio",value="normal", id="normal", name="auth" checked)
+        label.custom-control-label(for="normal") 일반 회원 가입   
+      .form-group.custom-control.custom-radio.custom-control-inline
+        input.form-control.custom-control-input(type="radio",value="company", id="company1", name="auth")
+        label.custom-control-label(for="company1") 기업 회원 가입  
+      .form-group.companyname
+        label(for='comname') company name
+        input.form-control(type='text', id='comname', name='comname', placeholder='company name')
       .form-group
         label(for='name') Name
         input.form-control(type='text', id='name', name='name', placeholder='Your name')
@@ -16,6 +25,6 @@ block content
       .form-group
         label(for='password_confirmation') Password Confirmation
         input.form-control(type='password', id='password_confirmation', name='password_confirmation', placeholder='Password')
-      a.btn.btn-outline-secondary(href='/users') List
-      | 
+     
+      br
       button.btn.btn-primary(type='submit') Register 

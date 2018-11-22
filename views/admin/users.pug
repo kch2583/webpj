@@ -15,13 +15,13 @@ block content
         each user in users
           tr
             td
-              a(href=`/users/${user._id}`)= user.name
+              a(href=`/admin/${user._id}`)= user.name
             td= user.email
             td= moment(user.createdAt).format('YYYY-MM-DD HH:mm:ss')
             td
-              a.btn.btn-sm.btn-outline-secondary(href=`/users/${user._id}/edit`) 
+              a.btn.btn-sm.btn-outline-secondary(href=`/admin/${user._id}/edit`) 
                 | #[i.fa.fa-pencil] Edit
               | 
-              a.btn.btn-sm.btn-outline-danger(href=`/users/${user._id}?_method=DELETE`)
+              a.btn.btn-sm.btn-outline-danger(href=`/admin/${user._id}?_method=DELETE`)
                 | #[i.fa.fa-trash] Delete
-    a.btn.btn-primary(href='/users/create') #[i.fa.fa-plus] Register a new user
+    a.btn.btn-primary(href='/admin/create') #[i.fa.fa-plus] admin 계정 만들기

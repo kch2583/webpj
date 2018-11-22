@@ -2,25 +2,17 @@ header
   .row.justify-content-between
     .col-auto
       h1.fa-pull-left
-        a(href="#") 공모전 홈페이지
+        a(href="/") 공모전 홈페이지
     .col-auto
-      //- form.form-inline.fa-pull-right.my-2
-      //-   button.btn.mx-1.border.rounded.m
-      //-     i.fas.fa-search.fa-2x
-      //- form.form-inline.fa-pull-right.my-2(action="/login")
-      //-   button.btn.mx-1.border.rounded
-      a(href="/users/create", title="create").fa-pull-right 회원가입 
-      p.fa-pull-right /
-      a(href="/users/login", title="login").fa-pull-right 로그인 
+      if user
+        a(href='/user/edit',title="edit").fa-pull-right #{user} 님 /
+        a(href="/logout", title="logout").fa-pull-right 로그아웃   
+      else
+        a(href="/users/create", title="create").fa-pull-right 회원가입 
+        p.fa-pull-right /
+        a(href="/login", title="login").fa-pull-right 로그인 
+      p.fa-pull-right / 
+      a(href="/users", title="userview").fa-pull-right userview
 
-      //- form.form-inline.fa-pull-right.my-2(action="/")
-      //-   button.btn.mx-1.border-rounded
-      //-     i.fab.fa-facebook-square.fa-2x
-      //- form.form-inline.fa-pull-right.my-2(action="")
-      //-   button.btn.mx-1.border-rounded
-      //-     i.fab.fa-google-plus-square.fa-2x
-      //- form.form-inline.fa-pull-right.my-2(action="")
-      //-   button.btn.mx-1.border-rounded
-      //-     i.fab.fa-kickstarter.fa-2x
 
     
