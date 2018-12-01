@@ -1,13 +1,14 @@
 var express = require('express');
 var router = express.Router();
+var catchErrors = require('../lib/async-error');
+var Contest = require("../models/contest");
+var User = require("../models/user");
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  
-  var logined = req.session.logined;
+router.get('/', catchErrors(async(req,res,next)=>{
+  const contests = await Contest.find({});
+  //const user =await User.find({})
   req.flash('success','hi');
-  console.log(req.session);
-  res.render('index', { title: 'Express', disuser: req.session.user});
-});
+  res.render('index', {contests: contests});
+}))
 
 module.exports = router;

@@ -54,7 +54,6 @@ router.get('/', needAuth, catchErrors(async(req,res,next)=>{
 //회원가입을 클릭했을 때
 router.get('/create', function(req,res,next){
   res.render('users/create', {messages: req.flash('hi')});
-  //
 });
 
 //회원가입 폼을 입력하고 제출했을 때

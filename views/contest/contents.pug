@@ -2,6 +2,8 @@ extends ../layout
 
 block content
   h1.title #{title}
+  form(action="", method="post")
   .sub #{company} / #{startdate} ~ #{enddate}
+  .date #{moment(question.startdate).format('YYYY-MM-DD')}, '/', #{moment(question.enddate).format('YYYY-MM-DD')}
   img(src="#{img}", alt="", srcset="").img  
   .details

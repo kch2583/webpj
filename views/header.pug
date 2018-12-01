@@ -4,8 +4,9 @@ header
       h1.fa-pull-left
         a(href="/") 공모전 홈페이지
     .col-auto
-      if user
-        a(href='/user/edit',title="edit").fa-pull-right #{user} 님 /
+      if currentUser
+        a(href='/user/edit',title="edit").fa-pull-right #{currentUser.name} 님 
+        p.fa-pull-right / #{currentUser.auth}   
         a(href="/logout", title="logout").fa-pull-right 로그아웃   
       else
         a(href="/users/create", title="create").fa-pull-right 회원가입 

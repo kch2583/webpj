@@ -1,10 +1,9 @@
 extends ../layout
 
-block slide 
-  include ./includes/slide
-
 block content
   .container
+    h1.main-title Contests
+
     table.table.table-hover
          thead
         tr
@@ -12,14 +11,20 @@ block content
           th Company, Manager
           th Period
           th Created at
+          th
       tbody
         each contest in contests
           tr
             td
-              a(href=`/contest/${content._id}`)= content.title
+              a(href=`/admin/${content._id}`)= content.title
             td= content.company ',' contents.manager
             td= content.startdate '~' content.enddate 
             td= moment(content.createdAt).format('YYYY-MM-DD HH:mm:ss')
-
+            td
+              a.btn.btn-sm.btn-outline-secondary(href=`/admin/${content._id}/edit`) 
+                | #[i.fa.fa-pencil] Edit
+              | 
+              a.btn.btn-sm.btn-outline-danger(href=`/admin/${content._id}?_method=DELETE`)
+                | #[i.fa.fa-trash] Delete
 
     

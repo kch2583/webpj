@@ -3,7 +3,7 @@ extends ../layout
 block content
   .container
     .clearfix
-      form.form-signin(action='/signin', method='POST')
+      form.form-signin(action='/admin/adminpw', method='POST')
         h3.form-signin-heading Admin Login
         .form-group
           label(for='email') Email address
@@ -18,3 +18,5 @@ block content
             placeholder='Password', required, autofocus
           )
         button.btn.btn-primary.btn-block(type='submit') Signin
+      |
+      a.btn.btn-primary(href='/admin/create') #[i.fa.fa-plus] admin 계정 만들기
