@@ -5,15 +5,16 @@ header
         a(href="/") 공모전 홈페이지
     .col-auto
       if currentUser
-        a(href='/user/edit',title="edit").fa-pull-right #{currentUser.name} 님 
-        p.fa-pull-right / #{currentUser.auth}   
+        a(href=`/users/${currentUser._id}/edit`,title="edit").fa-pull-right  #{currentUser.name} 님 
+        p.fa-pull-right #{currentUser.auth} 
+        p.fa-pull-right /  
         a(href="/logout", title="logout").fa-pull-right 로그아웃   
       else
         a(href="/users/create", title="create").fa-pull-right 회원가입 
         p.fa-pull-right /
         a(href="/login", title="login").fa-pull-right 로그인 
-      p.fa-pull-right / 
-      a(href="/users", title="userview").fa-pull-right userview
+    
+    
 
 
     

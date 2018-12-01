@@ -5,7 +5,7 @@ var catchErrors = require('../lib/async-error');
 
 //login 여부
 function needAuth(req, res, next) {
-  if (req.isAuthenticated) {
+  if (req.isAuthenticated()) {
     next();
   } else {
     req.flash('danger', '먼저 로그인을 해주세요');
@@ -96,7 +96,7 @@ router.get('/:id/edit', needAuth, catchErrors(async(req,res,next)=>{
 
 //edit 
 router.put('/:id/edit', needAuth, catchErrors(async(req,res,next)=> {
-  var err = validatechk(req.body);
+  var err = validateForm(req.body);
   if(err){
     req.flash('danger', err);
     return res.redirect('back');

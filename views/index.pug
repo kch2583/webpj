@@ -3,19 +3,14 @@ extends layout
 
 block content
   .container
-    table.table.table-hover
-      thead
-        tr
-          th Title
-          th Company, Manager
-          th Period
-          th Created at
-      tbody
-        each contest in contests
-          tr
-            td
-              a(href=`/contest/${content._id}`)= content.title
-            td= content.company, ',', contents.manager
-            td= content.startdate, '~' ,content.enddate 
-            td= moment(content.createdAt).format('YYYY-MM-DD HH:mm:ss')
-
+    if (currentUser)
+      if (currentUser.auth =="admin")
+        a(href="/admin/user_edit", title="user_mgt") user 관리
+        br
+        a(href="/admin/contest_edit", title="contest_mgt") 공모전 관리
+        br
+        a.btn.btn-primary(href='/admin/create') #[i.fa.fa-plus] admin 계정 만들기
+      else if(currentUser.auth =="normal" || currentUser.auth == "company")
+        include ./includes/table_con
+    else 
+      include ./includes/table_con

@@ -16,15 +16,15 @@ block content
         each contest in contests
           tr
             td
-              a(href=`/admin/${content._id}`)= content.title
-            td= content.company ',' contents.manager
-            td= content.startdate '~' content.enddate 
-            td= moment(content.createdAt).format('YYYY-MM-DD HH:mm:ss')
+              a(href=`/admin/${contest._id}`)= contest.title
+            td= contest.company ',' contest.manager
+            td= contest.startdate '~' contest.enddate 
+            td= moment(contest.createdAt).format('YYYY-MM-DD HH:mm:ss')
             td
-              a.btn.btn-sm.btn-outline-secondary(href=`/admin/${content._id}/edit`) 
+              a.btn.btn-sm.btn-outline-secondary(href=`/admin/${contest._id}/edit`) 
                 | #[i.fa.fa-pencil] Edit
               | 
-              a.btn.btn-sm.btn-outline-danger(href=`/admin/${content._id}?_method=DELETE`)
+              a.btn.btn-sm.btn-outline-danger(href=`/admin/${contest._id}?_method=DELETE`)
                 | #[i.fa.fa-trash] Delete
 
     

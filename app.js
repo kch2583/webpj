@@ -11,9 +11,7 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var favicon = require('serve-favicon');
 var passport = require('passport');
-// var LocalStrategy = require('passport-local').Strategy;
 var FileStore = require('session-file-store')(session);
-
 var passportConfig = require('./lib/passport-config');
 
 var indexRouter = require('./routes/index');

@@ -48,11 +48,10 @@ router.get('/users',needAuth, catchErrors(async(req,res,next)=>{
   res.render('admin/users', {users: users});
 }))
 
-
-// // /admin으로 들어갔을 때 admin로그인창으로 감
-router.get('/', catchErrors(async(req,res,next)=>{
-  res.render('admin/adminpw');
-}));
+router.get('/contest',needAuth, catchErrors(async(req,res,next)=>{
+  const contests = await Contest.find({});
+  res.render('admin/contest', {contests: contests});
+}))
 
 // admin 계정 생성 들어가기
 router.get('/create', function(req,res,next){
@@ -83,14 +82,5 @@ router.post('/create', catchErrors(async (req,res,next)=>{
   req.flash('success', 'admin 계정을 생성하였습니다.');
   res.redirect('/admin/index');
 }));
-
-// //admin 로그인
-// router.post('/password', catchErrors(async(req,res,next)=>{
-//   var user = await User.findOne({email: req.body.email});
-//   if(user.auth == 'auth'){
-//     req.flash('success', 'welcome admin')
-//     res.render('admin/index');
-//   }
-// }));
 
 module.exports = router;

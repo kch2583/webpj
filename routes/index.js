@@ -6,6 +6,9 @@ var User = require("../models/user");
 
 router.get('/', catchErrors(async(req,res,next)=>{
   const contests = await Contest.find({});
+  // const user = req.user;
+  // console.log(user);
+  
   //const user =await User.find({})
   req.flash('success','hi');
   res.render('index', {contests: contests});
