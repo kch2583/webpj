@@ -1,0 +1,44 @@
+extends ../layout
+
+block content
+  script
+    include ../public/javascripts/field.js
+  
+  .container.create_form
+    h1.main-title 공모전 등록
+    form(action='/contest/create', method='POST', enctype="multipart/form-data")
+      .form-group
+        label(for='title') 공모전 이름
+        input.form-control(type='text', id='contest_title', name='title', placeholder='title')
+      .form-group.companyname
+        label(for='comname') 주최사
+        input.form-control(type='text', id='comname', name='comname', placeholder='company name')
+      .form-group
+        label(for='manager') 담당자 이름
+        input.form-control(type='text', id='manager', name='manager',value="#{user.name}" , placeholder='Your name')
+      .form-group
+        label(for='email') 당담자 이메일
+        input.form-control(type='email', id='email', name='email', value="#{user.email}", placeholder='Email')
+      .form-group 
+        label(for='phone') 담당자 전화번호
+        input.form-control(type='phone', id='phone', name='phone', placeholder="phone number, write only number")
+      .form-group
+        label(for='date') 공모전 응시 기간
+        input.form-control(type='date', id='startdate', name='date')
+        ~
+        input.form-control(type='date', id='enddate', name='date')
+
+      .form-group
+        label(for= 'field') 공모전 분야
+        each field in fields
+          input.form-control(type='checkbox' name= "field", value="#{field}" )
+      .form-group
+        label(for = "target") 응시대상자
+        each target in targets
+          input.form-control(type='checkbox' name= "target", value="#{target}" )
+      .form-group
+        label(for='img') 공모전 이미지 첨부
+        input.form-control(type='file', name='img')
+
+      br
+      button.btn.btn-primary(type='submit') Register 

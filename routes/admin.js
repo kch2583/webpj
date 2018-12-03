@@ -83,4 +83,45 @@ router.post('/create', catchErrors(async (req,res,next)=>{
   res.redirect('/admin/index');
 }));
 
+router.delete('/:id', needAuth, catchErrors(async(req,res,next)=>{
+  var Userid = findOneAndRemove({_id:req.params.id});
+  req.flash('success', 'Deleted Successfully!');
+  res.redirect('/users');
+}))
+
+//edit 버튼을 눌렀을 때 
+router.get('/:id/edit', needAuth, catchErrors(async(req,res,next)=>{
+  var user = User.findById(req.params.id);
+  res.render('users/edit', {user: user});
+}))
+
+//edit 
+router.put('/:id/edit', needAuth, catchErrors(async(req,res,next)=> {
+  var err = validateForm(req.body);
+  if(err){
+    req.flash('danger', err);
+    return res.redirect('back');
+  }
+  const user = await User.findById({_id: req.params.id});
+  if (!user) {
+    req.flash('danger', '존재하지 않는 사용자입니다.');
+    return res.redirect('back');
+  }
+  if(user.password !== req.body.current_password){
+    req.flash('danger', '비밀번호가 일치하지 않습니다.');
+    return res.redirect('back');
+  }
+  user.name = req.body.name;
+  user.email = req.body.email;
+  user.auth = req.body.auth;
+  if(req.body.password){
+    user.password = await user.generateHash(req.body.password);
+  }
+
+  await user.save();
+  req.flash('success', '성공적으로 변경했습니다.');
+  res.redirect('/users/index');
+}))
+
+
 module.exports = router;
