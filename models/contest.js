@@ -6,6 +6,7 @@ var contestschema = new Schema({
   company: {type: String, required: true, trim: true},
   // field: {type: String, required:true,trim: true},
   // target: {type: String, required:true, trim:true},
+  author : { type: Schema.Types.ObjectId, ref: 'User' },
   field : [String],
   target: [String],
   manager: {type:String, required:true,trim:true},

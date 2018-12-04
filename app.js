@@ -13,13 +13,19 @@ var favicon = require('serve-favicon');
 var passport = require('passport');
 var FileStore = require('session-file-store')(session);
 var passportConfig = require('./lib/passport-config');
+var request = require('request');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var admin = require('./routes/admin');
+var contestRouter = require('./routes/contest');
 //var authRouter = require('./routes/auth')(app, passport);
 
 //https://pacific-plateau-16529.herokuapp.com/ | https://git.heroku.com/pacific-plateau-16529.git
+
+//Secret key :6LeFtn4UAAAAAHbEP248K1sNDemD4IYNp2by5aei
+//Site key : 6LeFtn4UAAAAAFEC_faBmSs2xHjD_fQxN0uXlTXh
+
 
 var app = express();
 
@@ -108,6 +114,9 @@ app.use('/admin', admin);
 //app.use('/auth', authRouter);
 require('./routes/auth')(app, passport);
 //require('./routes/admin')(app, passport);
+app.use('/contest', contestRouter);
+//require('./routes/contest')(app, passport);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

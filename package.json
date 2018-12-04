@@ -28,8 +28,10 @@
     "passport-local": "^1.0.0",
     "pug": "2.0.0-beta11",
     "querystring": "^0.2.0",
+    "request": "^2.88.0",
     "serve-favicon": "^2.5.0",
-    "session-file-store": "^1.2.0"
+    "session-file-store": "^1.2.0",
+    "summernote": "^0.8.11"
   },
   "main": "app.js",
   "devDependencies": {},

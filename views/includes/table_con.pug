@@ -1,3 +1,5 @@
+a(href="/contest/create", title="create_contest").create_contest 공모전 등록하기
+
 table.table.table-hover
   thead
     tr
@@ -9,7 +11,15 @@ table.table.table-hover
     each contest in contests
       tr
         td
-          a(href=`/contest/${content._id}`)= content.title
-        td= content.company, ',', contents.manager
-        td= content.startdate, '~' ,content.enddate 
-        td= moment(content.createdAt).format('YYYY-MM-DD HH:mm:ss')
+          a(href=`/contest/${contest._id}`)= contest.title
+        td= contest.company, ',', contest.manager
+        td= contest.startdate, '~' ,contest.enddate 
+        td= moment(contest.createdAt).format('YYYY-MM-DD HH:mm:ss')
+        if currentUser
+          if currentUser.auth =="admin"
+            td
+              a.btn.btn-sm.btn-outline-secondary(href=`/contest/${contest._id}/edit`) 
+                | #[i.fa.fa-pencil] Edit
+              | 
+              a.btn.btn-sm.btn-outline-danger(href=`/contest/${contest._id}?_method=DELETE`)
+                | #[i.fa.fa-trash] Delete

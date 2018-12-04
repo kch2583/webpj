@@ -1,10 +1,19 @@
 extends ../layout
 
 block content
-  h1.title #{title}
+  h1.title #{contest.title}
 
-  .sub #{company} / #{startdate} ~ #{enddate}
-  .date #{moment(question.startdate).format('YYYY-MM-DD')}, '/', #{moment(question.enddate).format('YYYY-MM-DD')}
+  .sub #{contest.company} / #{contest.startdate} ~ #{contest.enddate}
+  .date #{moment(contest.startdate).format('YYYY-MM-DD')}, '/', #{moment(contest.enddate).format('YYYY-MM-DD')}
+  .info '담당자 : ', #{contest.manager}, '전화번호 : ', #{contest.phone}
+  
   if contest.img 
     img.img-fluid(src=contest.img)
-  .details 
+  .details #{contest.content}
+
+  if contest.numAnswers > 0
+    hr
+    h3 #{contest.numAnswers} Answer(s)
+    .answers.show
+      each answer in answers
+        include _answer

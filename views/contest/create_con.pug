@@ -1,12 +1,10 @@
 extends ../layout
 
-block content
-  script
-    include ../public/javascripts/field.js
-  
+block content  
   .container.create_form
+  
     h1.main-title 공모전 등록
-    form(action='/contest/create', method='POST', enctype="multipart/form-data")
+    form(action='/contest/create',id="comment_form", method='POST',onsubmit="postForm()" ,enctype="multipart/form-data")
       .form-group
         label(for='title') 공모전 이름
         input.form-control(type='text', id='contest_title', name='title', placeholder='title')
@@ -18,27 +16,44 @@ block content
         input.form-control(type='text', id='manager', name='manager',value="#{user.name}" , placeholder='Your name')
       .form-group
         label(for='email') 당담자 이메일
-        input.form-control(type='email', id='email', name='email', value="#{user.email}", placeholder='Email')
+        input.form-control(type='email', id='email', name='email', value="gg" , placeholder='Email')
       .form-group 
         label(for='phone') 담당자 전화번호
         input.form-control(type='phone', id='phone', name='phone', placeholder="phone number, write only number")
       .form-group
-        label(for='date') 공모전 응시 기간
-        input.form-control(type='date', id='startdate', name='date')
-        ~
-        input.form-control(type='date', id='enddate', name='date')
+        label(for='startdate') 공모전 응시 기간
+        input.form-control(type='date', id='startdate', name='startdate')
+        |
+        | ~
+        label(for='enddate') 
+        input.form-control(type='date', id='enddate', name='enddate')
 
-      .form-group
-        label(for= 'field') 공모전 분야
+      -var fields = ['기획/아이디어', '광고/마케팅', '논문/리포트', '영상/UCC/사진', '디자인/캐릭터/웹툰', '웹/모바일/플래시', '게임/소프트웨어', '과학/공학', '문학/글/시나리오', '건축/건설/인테리어', '네이밍/슬로건', '예체능/미술/음악', '대외활동/서포터즈', '봉사활동' , '취업/창업', '해외', '기타'];
+      -const targets = ['제한없음', '일반인', '대학생/대학원생', '청소년', '어린이', '기타'];
+      -const awards = ['5천만원 이상', '3천만원~5천만원', '1천만원~3천만원', '1천만원이하', '입사 시 가산점', '인턴채용', '정직원채용', '기타',];
+
+      .form-group.inline-form
+        label(for= 'field') 공모전 분야 
+        br
         each field in fields
-          input.form-control(type='checkbox' name= "field", value="#{field}" )
+          input(type='checkbox' name= "field", value= field )
+          |       
+          |  #{field}
       .form-group
         label(for = "target") 응시대상자
+        br
         each target in targets
-          input.form-control(type='checkbox' name= "target", value="#{target}" )
+          input(type='checkbox' name= "target", value= target )
+          |
+          | #{target}
       .form-group
         label(for='img') 공모전 이미지 첨부
         input.form-control(type='file', name='img')
+      .form-group
+        label(for='details') 세부내용
+        textarea(name="content" style="display: none;")
+        textarea(id="summernote" name="details")
+      .g-recaptcha(data-sitekey="6LeFtn4UAAAAAFEC_faBmSs2xHjD_fQxN0uXlTXh") 
 
       br
       button.btn.btn-primary(type='submit') Register 
