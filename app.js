@@ -46,8 +46,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
@@ -107,16 +107,18 @@ mongoose.connect(uri, { useCreateIndex: true, useNewUrlParser: true}, function(e
   console.log('Connected...');
 });
 
+var favoriterouter = require('./routes/api');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admin', admin);
-//app.use('/auth', authRouter);
-require('./routes/auth')(app, passport);
-//require('./routes/admin')(app, passport);
-app.use('/contest', contestRouter);
-//require('./routes/contest')(app, passport);
 
+require('./routes/auth')(app, passport);
+
+app.use('/contest', contestRouter);
+
+app.use('/api', favoriterouter);
+// app.use('/api', require('./routes/api/index'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

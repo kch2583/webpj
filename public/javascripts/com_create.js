@@ -12,8 +12,7 @@ $(function(){
     tabsize: 2,
     height: 300,                 // set editor height
     minHeight: null,             // set minimum height of editor
-    maxHeight: null,             // set maximum height of editor
-    focus: true 
+    maxHeight: null             // set maximum height of edito
   });
   
   $('#comment_form').submit(function() {
@@ -28,12 +27,9 @@ $(function(){
     return false;
   });
 
-  function postForm() {
-    $('textarea[name="content"]').val($('#summernote').summernote('code'));
-  }
+  $('textarea[name="content"]').val($('#summernote').summernote('code'));
+
+  
+
 
 })
-
-
-//destroy
-//$('#summernote').summernote('destroy');

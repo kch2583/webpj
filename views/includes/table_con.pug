@@ -1,4 +1,4 @@
-a(href="/contest/create", title="create_contest").create_contest 공모전 등록하기
+include _paginate
 
 table.table.table-hover
   thead
@@ -12,9 +12,9 @@ table.table.table-hover
       tr
         td
           a(href=`/contest/${contest._id}`)= contest.title
-        td= contest.company, ',', contest.manager
-        td= contest.startdate, '~' ,contest.enddate 
-        td= moment(contest.createdAt).format('YYYY-MM-DD HH:mm:ss')
+        td= contest.company + ', '+ contest.manager
+        td= moment(contest.startdate).format('YYYY-MM-DD') + ' ~ ' + moment(contest.enddate).format('YYYY-MM-DD') 
+        td= moment(contest.createdAt).format('YYYY-MM-DD')
         if currentUser
           if currentUser.auth =="admin"
             td

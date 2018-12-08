@@ -9,24 +9,30 @@ block content
         label(for='title') 공모전 이름
         input.form-control(type='text', id='contest_title', name='title', placeholder='title')
       .form-group.companyname
-        label(for='comname') 주최사
-        input.form-control(type='text', id='comname', name='comname', placeholder='company name')
+        label(for='company') 주최사
+        input.form-control(type='text', id='company', name='company', placeholder='company name')
       .form-group
         label(for='manager') 담당자 이름
-        input.form-control(type='text', id='manager', name='manager',value="#{user.name}" , placeholder='Your name')
+        input.form-control(type='text', id='manager', name='manager' , placeholder='Your name')
       .form-group
         label(for='email') 당담자 이메일
-        input.form-control(type='email', id='email', name='email', value="gg" , placeholder='Email')
+        input.form-control(type='email', id='email', name='email' , placeholder='Email')
       .form-group 
         label(for='phone') 담당자 전화번호
-        input.form-control(type='phone', id='phone', name='phone', placeholder="phone number, write only number")
+        input.form-control(type='phone', id='phone', name='phone', placeholder=" - 를 꼭 써주세요!")
       .form-group
         label(for='startdate') 공모전 응시 기간
         input.form-control(type='date', id='startdate', name='startdate')
         |
         | ~
+      .form-group
         label(for='enddate') 
         input.form-control(type='date', id='enddate', name='enddate')
+    
+      .form-group
+        label(for='address') 위치
+        input.form-control(type='text', id='address', name='address', placeholder='주소 전체를 정확하게 기입하세요')      
+        
 
       -var fields = ['기획/아이디어', '광고/마케팅', '논문/리포트', '영상/UCC/사진', '디자인/캐릭터/웹툰', '웹/모바일/플래시', '게임/소프트웨어', '과학/공학', '문학/글/시나리오', '건축/건설/인테리어', '네이밍/슬로건', '예체능/미술/음악', '대외활동/서포터즈', '봉사활동' , '취업/창업', '해외', '기타'];
       -const targets = ['제한없음', '일반인', '대학생/대학원생', '청소년', '어린이', '기타'];
@@ -54,6 +60,7 @@ block content
         textarea(name="content" style="display: none;")
         textarea(id="summernote" name="details")
       .g-recaptcha(data-sitekey="6LeFtn4UAAAAAFEC_faBmSs2xHjD_fQxN0uXlTXh") 
+
 
       br
       button.btn.btn-primary(type='submit') Register 

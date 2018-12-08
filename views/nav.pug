@@ -9,10 +9,10 @@ nav.navbar.navbar-expand-md.navbar-dark.bg-dark
           a.nav-link(href="/") 
             span.sr-only (current)
         li.nva-item
-          a.nav-link(href="/") 공모전
+          a.nav-link.create_contest(href="/contest/create", title="create_contest") 공모전 등록하기
         li.nva-item
           a.nav-link(href="/") 공모전
         li.nva-item
           a.nav-link(href="/") 공모전 
         li.nva-item
-          a.nav-link(href="/") 공모전
+          a.nav-link(href=`/user/${currentUser}`) 마이페이지

@@ -1,19 +1,43 @@
 extends ../layout
 
 block content
-  h1.title #{contest.title}
+  script.
+ 
+  .container
+    h1.title #{contest.title}
 
-  .sub #{contest.company} / #{contest.startdate} ~ #{contest.enddate}
-  .date #{moment(contest.startdate).format('YYYY-MM-DD')}, '/', #{moment(contest.enddate).format('YYYY-MM-DD')}
-  .info '담당자 : ', #{contest.manager}, '전화번호 : ', #{contest.phone}
-  
-  if contest.img 
-    img.img-fluid(src=contest.img)
-  .details #{contest.content}
 
-  if contest.numAnswers > 0
-    hr
-    h3 #{contest.numAnswers} Answer(s)
-    .answers.show
-      each answer in answers
-        include _answer
+    .sub#mapscomname #{contest.company} 
+    
+    .date= moment(contest.startdate).format('YYYY-MM-DD') + ' ~ ' + moment(contest.enddate).format('YYYY-MM-DD')
+    .info '담당자 : ' #{contest.manager} '전화번호 : ' #{contest.phone}
+    
+
+    if contest.img 
+      img.img-fluid(src=contest.img)
+    //- .details#details1 #{contest.details}
+    .details#details1 #{contest.details}
+    
+    h3.map 위치
+    .address#maps(style="display:none;") #{contest.address} 
+    div#map(style="width:500px;height:400px;") 
+
+
+    form(action=`/contest/${contest.id}/comments`, method='POST')
+      .form-group
+        label(for='comments') 댓글
+        textarea.form-control(name="content", rows="5", placeholder="댓글 달기")
+      button.btn.btn-primary(type="submit") 댓글달기
+
+
+
+    if contest.numAnswers > 0
+      hr
+      h3 #{contest.numAnswers} Answer(s)
+      .answers.show
+        each comment in comments
+          include _comments
+
+  script(src="/javascripts/contest_client.js")
+  script(src="/javascripts/kakaomap.js")
+    

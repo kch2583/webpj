@@ -1,9 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var User  = require("../models/user");
+var Contest = require('../models/contest')
+var Comments = require("../models/comments");
 var multer = require('multer');
 var fs = require('fs-extra');
 var path = require('path');
+var request = require('request');
 const catchErrors = require('../lib/async-error');
 
 function needAuth(req, res, next) {
@@ -57,17 +60,19 @@ router.post('/create', needAuth,
       res.json({"responseCode" : 0,"responseDesc" : "Sucess"});
     });
 
-  var contest = new Question({
+  var contest = new Contest({
     title: req.body.title,
-    company: req.body.comname,
+    company: req.body.company,
     field: req.body.field,
     target: req.body.target,
     manager: req.body.manager,
     phone: req.body.phone,
+    address : req.body.address,
     details: req.body.content ,
     startdate: req.body.startdate,
     enddate: req.body.enddate,
   });
+
 
   if (req.file) {
     const dest = path.join(__dirname, '../public/images/uploads/');  // 옮길 디렉토리
@@ -79,27 +84,29 @@ router.post('/create', needAuth,
   
   await contest.save();
   req.flash('success', 'Successfully posted');
-  res.redirect('/contents');
+  res.redirect('/');
 }));
 
 //공모전 보기
-router.get('/:id', needAuth, function(req,res,next){
-  const contest = await contest.findById(req.params.id).populate('author');
-  const comments = await Comments.find({question: question.id}).populate('author');
+router.get('/:id', catchErrors(async(req,res,next)=> {
+  const contest = await Contest.findById(req.params.id).populate('author');
+  const comments = await Comments.find({contest: contest.id}).populate('author');
+  
+  
   res.render('contest/contents',{contest:contest, comments:comments });
-})
+}))
 
 //공모전 수정
 router.get('/:id/edit', needAuth, catchErrors(async (req, res, next) => {
   const contest = await Contest.findById(req.params.id);
-  res.render('questions/edit', {contest: contest});
+  res.render('contest/edit', {contest: contest});
 }));
 
 //공모전 수정 저장
-router.put('/:id', needAuth, function(req,res,next){
+router.put('/:id', needAuth, catchErrors(async(req,res,next)=> {
   const contest = await Contest.findById(req.params.id);
   if (!contest) {
-    req.flash('danger', 'Not exist question');
+    req.flash('danger', 'Not exist contest');
     return res.redirect('back');
   }
 
@@ -124,12 +131,45 @@ router.put('/:id', needAuth, function(req,res,next){
   await contest.save();
   req.flash('success', 'Successfully updated');
   res.redirect('/contents');
-})
+}));
 
 router.delete('/:id', needAuth, catchErrors(async (req, res, next) => {
   await Contest.findOneAndRemove({_id: req.params.id});
   req.flash('success', 'Successfully deleted');
-  res.redirect('/questions');
+  res.redirect('/contents');
+}));
+
+router.get('/map', (req,res,next)=>{
+  var address = req.query.address;
+  if(!address){
+    console.log("해햇");
+    return res.json([]); 
+   
+  }
+  console.log(address);
+  return res.json(address);
+})
+
+router.post('/:id/comments', needAuth, catchErrors(async (req, res, next) => {
+  const user = req.user;
+  const contest = await Contest.findById(req.params.id);
+
+  if (!contest) {
+    req.flash('danger', 'Not exist contest');
+    return res.redirect('back');
+  }
+
+  var comment = new Comment({
+    author: user._id,
+    contest: contest._id,
+    content: req.body.content
+  });
+  await comment.save();
+  contest.numcomments++;
+  await contest.save();
+
+  req.flash('success', 'Successfully commented');
+  res.redirect(`/contest/${req.params.id}`);
 }));
 
 module.exports = router;

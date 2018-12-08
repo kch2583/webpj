@@ -14,4 +14,6 @@ router.get('/', catchErrors(async(req,res,next)=>{
   res.render('index', {contests: contests});
 }))
 
+
+
 module.exports = router;

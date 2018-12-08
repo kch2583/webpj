@@ -22,12 +22,16 @@ html
     
     link(href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.css" rel="stylesheet")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.js")
-    script(src="lang/summernote-ko-KR.js")
+    //-script(src="lang/summernote-ko-KR.js")
 
     script(src='https://www.google.com/recaptcha/api.js' async defer)
     script(src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer)
 
+    script(type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=07692429cdededb1ecfe34c63c3121b1&libraries=services,clusterer")
+    //- script(src="//developers.kakao.com/sdk/js/kakao.min.js")
+
     script(src="/javascripts/com_create.js")
+
   body
     block header
       include ./header

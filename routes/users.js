@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var User  = require("../models/user");
 var catchErrors = require('../lib/async-error');
+var Favorite = require('../models/favorite');
+var Contest = require('../models/contest');
 
 //login 여부
 function needAuth(req, res, next) {
@@ -43,13 +45,31 @@ function validateForm(form, options) {
   return null;
 }
 
+router.get('/', catchErrors(async (req, res, next) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
 
+  var query = {};
+  const term = req.query.term;
+  if (term) {
+    query = {$or: [
+      {title: {'$regex': term, '$options': 'i'}},
+      {content: {'$regex': term, '$options': 'i'}}
+    ]};
+  }
+  const users = await User.paginate(query, {
+    sort: {createdAt: -1}, 
+    populate: 'author', 
+    page: page, limit: limit
+  });
+  res.render('admin/index', {users:users, query: req.query});
+}));
 
 /* GET users listing. */
-router.get('/', needAuth, catchErrors(async(req,res,next)=>{
-  const users = User.find({});
-  res.render('admin/index', {users: users});
-}))
+// router.get('/', needAuth, catchErrors(async(req,res,next)=>{
+//   const users = await User.find({});
+//   res.render('admin/index', {users: users});
+// }))
 
 //회원가입을 클릭했을 때
 router.get('/create', function(req,res,next){
@@ -122,10 +142,19 @@ router.put('/:id/edit', needAuth, catchErrors(async(req,res,next)=> {
   res.redirect('/users/index');
 }))
 
-router.get('/:id', function(req, res) {
-  // users 밑에 뭔가 더 추가했을때 
-  //: --> params 으로 받아짐 
+router.get('/:id/favorite',catchErrors(async(req,res,next)=>  {
+  var contests = await Contest.find({_id: req.params.id}).populate('email');
+  res.render('users/favorite', {contests: contests});
+}));
 
- // title : req.params.id ;
-})
+router.post('/favorite', catchErrors(async(req,res,next)=>  {
+  var user = await User.findOne({_id: req.params.id});
+  console.log("여길 지나감");
+  
+  // user.favorite.push(req.params.id);
+}));
+
+
+
+
 module.exports = router;

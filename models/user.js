@@ -1,12 +1,14 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
+const mongoosePaginate = require('mongoose-paginate');
 
 var userschema = new Schema({
   name: {type: String, required:true, trim: true},
   email: {type: String, required: true, index: true, unique: true, trim: true},
   password: {type: String},
   auth: {type:String},
+  favorite:[String],
   facebook: {id: String, token:String, photo: String},
   createdAt: {type: Date, default: Date.now}
 }, {
@@ -21,7 +23,7 @@ userschema.methods.generateHash = function(password) {
 userschema.methods.validatePassword = function(password) {
   return bcrypt.compare(password, this.password); // return Promise
 };
-
+userschema.plugin(mongoosePaginate);
 //user's' 로 저장됨?
 var User = mongoose.model('user', userschema);
 
