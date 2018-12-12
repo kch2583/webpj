@@ -1,5 +1,38 @@
+block slide
 
-  
+  each contest in contests
+    .container.mt-5
+      #carouselExampleIndicators.carousel.slide(data-ride="carousel")
+        ol.carousel-indicators
+          li.active(data-target="#carouselExampleIndicators", data-slide-to="0")
+          li(data-target="#carouselExampleIndicators", data-slide-to="1")
+          li(data-target="#carouselExampleIndicators", data-slide-to="2")
+        .carousel-inner 
+          .carousel-item.active
+            img.d-block.w-100.img-fluid(src="../images/slide1.jpg", alt="" )
+          .carousel-item
+            img.d-block.w-100.img-fluid(src="../images/slide2.jpg", alt="" )
+          .carousel-item
+            img.d-block.w-100.img-fluid(src="../images/slide3.jpg", alt="" )
+        a.carousel-control-prev(href="#carouselExampleIndicators", role="button", data-slide="prev")
+          span.carousel-control-prev-icon.fa-2x(aria-hidden="true")
+          span.sr-only Previous
+        a.carousel-control-next(href="#carouselExampleIndicators", role="button", data-slide="next")
+          span.carousel-control-next-icon.fa-2x(aria-hidden="true")
+          span.sr-only Next
+
+    .container
+      .slideshow 
+        img.active(src=contest.img)
+        img(src="")
+        img(src="")
+      .indicator
+        ul
+          li.active
+          li
+          li
+
+block slide
 
 .container.mt-5
   #carouselExampleIndicators.carousel.slide(data-ride="carousel")
@@ -7,13 +40,26 @@
       li.active(data-target="#carouselExampleIndicators", data-slide-to="0")
       li(data-target="#carouselExampleIndicators", data-slide-to="1")
       li(data-target="#carouselExampleIndicators", data-slide-to="2")
-    .carousel-inner 
-      .carousel-item.active
-        img.d-block.w-100.img-fluid(src="../images/slide1.jpg", alt="" )
-      .carousel-item
-        img.d-block.w-100.img-fluid(src="../images/slide2.jpg", alt="" )
-      .carousel-item
-        img.d-block.w-100.img-fluid(src="../images/slide3.jpg", alt="" )
+    
+    -for(i=0, i<3, i++)
+      
+
+
+      
+    
+    .container.mt-5
+      #carouselExampleIndicators.carousel.slide(data-ride="carousel")
+        ol.carousel-indicators
+          li.active(data-target="#carouselExampleIndicators", data-slide-to="0")
+          li(data-target="#carouselExampleIndicators", data-slide-to="1")
+          li(data-target="#carouselExampleIndicators", data-slide-to="2")
+        .carousel-inner 
+          .carousel-item.active
+            img.d-block.w-100.img-fluid(src="../images/slide1.jpg", alt="" )
+          .carousel-item
+            img.d-block.w-100.img-fluid(src="../images/slide2.jpg", alt="" )
+          .carousel-item
+            img.d-block.w-100.img-fluid(src="../images/slide3.jpg", alt="" )
     a.carousel-control-prev(href="#carouselExampleIndicators", role="button", data-slide="prev")
       span.carousel-control-prev-icon.fa-2x(aria-hidden="true")
       span.sr-only Previous
@@ -21,14 +67,10 @@
       span.carousel-control-next-icon.fa-2x(aria-hidden="true")
       span.sr-only Next
 
-.container
-  .slideshow 
-    img.active(src="")
-    img(src="")
-    img(src="")
-  .indicator
-    ul
-      li.active
-      li
-      li
-    
+    .container
+      .slideshow 
+        img.active(src=contest.img)
+      .indicator
+        ul
+          li.active
+        

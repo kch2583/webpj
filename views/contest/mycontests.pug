@@ -1,0 +1,28 @@
+extends ../layout
+
+include ../includes/_paginate
+
+block content
+  .container
+    table.table.table-hover
+      thead.thead-dark
+        tr
+          th Title
+          th Company, Manager
+          th Period
+          th Created at
+          th @@
+      tbody
+        each contest in contests
+          tr
+            td
+              a(href=`/contest/${contest._id}`)= contest.title
+            td= contest.company + ', '+ contest.manager
+            td= moment(contest.startdate).format('YYYY-MM-DD') + ' ~ ' + moment(contest.enddate).format('YYYY-MM-DD') 
+            td= moment(contest.createdAt).format('YYYY-MM-DD')
+            td
+              a.btn.btn-sm.btn-outline-secondary(href=`/contest/${contest._id}/edit`) 
+                | #[i.fa.fa-pencil] Edit
+              | 
+              a.btn.btn-sm.btn-outline-danger(href=`/contest/${contest._id}?_method=DELETE`)
+                | #[i.fa.fa-trash] Delete

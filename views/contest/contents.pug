@@ -1,17 +1,41 @@
 extends ../layout
 
 block content
-  script.
- 
-  .container
+  .container.contest
     h1.title #{contest.title}
+
+    if currentUser !== contest.author 
+      a.btn.btn-sm.btn-outline-secondary(href=`/contest/${contest._id}/edit`) 
+        | #[i.fa.fa-pencil] Edit
+      | 
+      a.btn.btn-sm.btn-outline-danger(href=`/contest/${contest._id}?_method=DELETE`)
+        | #[i.fa.fa-trash] Delete
+
+    .col-sm
+      .buttons
+        button.btn.btn-primary.contest-share-btn#sharebutton(data-id=contest._id, href="https://www.facebook.com/sharer/sharer.php?s=100&p[url]=https://naver.com") 
+        a(href=`https://www.facebook.com/sharer/sharer.php?s=100&p[url]=https://` target=_blank display="popup")
+          span #[i.fa.fa-thumbs-up] Share
+        button.btn.btn-primary.contest-like-btn#likebutton(data-id=contest._id) 
+          span #[i.fa.fa-thumbs-up] Like
+        button.btn.btn-primary.contest-hate-btn#hatebutton(data-id=contest._id) 
+          span #[i.fa.fa-thumbs-down] Hate
+        button.btn.btn-primary.contest-favorite-btn(data-id=contest.id) 
+          span #[i.fas.fa-star#favorite] Favorite
+      .numbers.contest.
+        #[span.number.num-likes= contest.numLikes] likes,
+        #[span.number.num-hates= contest.numHates] hates,
+        #[span.number.num-comments= contest.numcomments] comments,
+        #[span.number.num-reads= contest.numReads] reads
 
 
     .sub#mapscomname #{contest.company} 
     
     .date= moment(contest.startdate).format('YYYY-MM-DD') + ' ~ ' + moment(contest.enddate).format('YYYY-MM-DD')
-    .info '담당자 : ' #{contest.manager} '전화번호 : ' #{contest.phone}
-    
+    .info 담당자 :  #{contest.manager}   전화번호 :  #{contest.phone}
+    .field 공모 분야 :  #{contest.field}
+    .target 응시 대상 :  #{contest.target}
+
 
     if contest.img 
       img.img-fluid(src=contest.img)
@@ -31,13 +55,14 @@ block content
 
 
 
-    if contest.numAnswers > 0
+    if contest.numcomments > 0
       hr
-      h3 #{contest.numAnswers} Answer(s)
-      .answers.show
+      h3 #{contest.numcomments} 댓글
+      .comments.show
         each comment in comments
           include _comments
-
+        
   script(src="/javascripts/contest_client.js")
   script(src="/javascripts/kakaomap.js")
+  script(src="/javascripts/com_create.js")
     

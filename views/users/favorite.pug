@@ -1,25 +1,23 @@
 extends ../layout
 
 block content
-  table.table.table-hover
-    thead
-      tr
-        th Title
-        th Company, Manager
-        th Period
-        th Created at
-        th favorite
-    tbody
-      each contest in contests
+  .container
+    table.table.table-hover
+      thead
         tr
-          td
-            a(href=`/contest/${contest._id}`)= contest.title
-          td= contest.company, ',', contest.manager
-          td= contest.startdate, '~' ,contest.enddate 
-          td= moment(contest.createdAt).format('YYYY-MM-DD HH:mm:ss')
-          td
-            button.btn.btn-primary.question-like-btn(data-id=contest.id) 
-              span #[i.fas.fa-star#favorite]
-
-              //- <i class="fas fa-star">색칠된 별</i>
-              //- <i class="far fa-star">빈 별</i> 
+          th Title
+          th Company, Manager
+          th Period
+          th Created at
+          th favorite
+      tbody
+        each contest in contests
+          tr
+            td
+              a(href=`/contest/${contest._id}`)= contest.title
+            td= contest.company, ',', contest.manager
+            td= contest.startdate, '~' ,contest.enddate 
+            td= moment(contest.createdAt).format('YYYY-MM-DD HH:mm:ss')
+            td
+              button.btn.btn-primary.contest-favorite-btn.clicked(data-id=contest.id) 
+                span #[i.fas.fa-star#favorite]

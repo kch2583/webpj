@@ -3,13 +3,21 @@
     .number
       span.number.num-likes= comment.numLikes
     .button
-      a.like.comment-like-btn(href='#', data-id=comment.id)
+      a.like.comments-like-btn(href='#', data-id=comment.id)
         i.fa.fa-thumbs-up
         | 
         | Like
+  .numbers.hate-badge
+    .number
+      span.number.num-hates= comment.numHates
+    .button
+      a.like.comments-hate-btn(href='#', data-id=comment.id)
+        i.fa.fa-thumbs-down
+        | 
+        | Hate
 
   .card-body
-    .content= comment.content
+    .content= comment.comments
   .row.card-body
     .col-sm
     .col-sm.text-right

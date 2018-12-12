@@ -30,6 +30,7 @@ $(function(){
   $('textarea[name="content"]').val($('#summernote').summernote('code'));
 
   
+  $('#details1').html($('#details1').text());
 
 
 })

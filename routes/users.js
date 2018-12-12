@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var User  = require("../models/user");
 var catchErrors = require('../lib/async-error');
-var Favorite = require('../models/favorite');
 var Contest = require('../models/contest');
 
 //login 여부
@@ -11,7 +10,7 @@ function needAuth(req, res, next) {
     next();
   } else {
     req.flash('danger', '먼저 로그인을 해주세요');
-    res.redirect('users/login');
+    res.redirect('/login');
   }
 }
 
@@ -91,7 +90,7 @@ router.post('/create', catchErrors(async (req,res,next)=>{
   var user = new User({
     name : req.body.name,
     email : req.body.email,
-    auth : req.body.auth,
+    auth : "normal",
    
   });
   user.password = await user.generateHash(req.body.password);
@@ -142,16 +141,21 @@ router.put('/:id/edit', needAuth, catchErrors(async(req,res,next)=> {
   res.redirect('/users/index');
 }))
 
-router.get('/:id/favorite',catchErrors(async(req,res,next)=>  {
-  var contests = await Contest.find({_id: req.params.id}).populate('email');
-  res.render('users/favorite', {contests: contests});
+router.get('/:id/favorite',needAuth ,catchErrors(async(req,res,next)=>  {  
+  // var favorites = await Favorite.find({author :req.params.id});
+  var user = await User.findById(req.params.id);
+  var contests = await Contest.find({_id: {$in:[ user.favorites ]} });
+  // {$in:[favorites.favorites]}
+  console.log(user.favorites, contests._id);
+  
+  res.render('users/favorite', {contests:contests});
 }));
 
-router.post('/favorite', catchErrors(async(req,res,next)=>  {
-  var user = await User.findOne({_id: req.params.id});
-  console.log("여길 지나감");
-  
-  // user.favorite.push(req.params.id);
+router.get('/favorite', catchErrors(async(req,res,next)=>  {
+  if(!req.user){
+  req.flash('danger', '로그인이 필요합니다.');
+  res.redirect('/login');
+  }
 }));
 
 

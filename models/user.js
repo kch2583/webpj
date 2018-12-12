@@ -8,12 +8,13 @@ var userschema = new Schema({
   email: {type: String, required: true, index: true, unique: true, trim: true},
   password: {type: String},
   auth: {type:String},
-  favorite:[String],
+  favorites: [String],
   facebook: {id: String, token:String, photo: String},
   createdAt: {type: Date, default: Date.now}
 }, {
   toJSON: { virtuals: true},
-  toObject: {virtuals: true}
+  toObject: {virtuals: true},
+  // useEachPush : true
 });
 
 userschema.methods.generateHash = function(password) {

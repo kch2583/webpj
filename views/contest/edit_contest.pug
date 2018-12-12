@@ -3,35 +3,35 @@ extends ../layout
 block content  
   .container.create_form
   
-    h1.main-title 공모전 등록
-    form(action='/contest/create',id="comment_form", method='POST',onsubmit="postForm()" ,enctype="multipart/form-data")
+    h1.main-title 공모전 수정하기
+    form(action=`/contest/${contest._id}/edit?_method=PUT`,id="comment_form", method='POST',onsubmit="postForm()" ,enctype="multipart/form-data")
       .form-group
         label(for='title') 공모전 이름
-        input.form-control(type='text', id='contest_title', name='title',placeholder='title')
+        input.form-control(type='text', id='contest_title', name='title',value=contest.title,placeholder='title')
       .form-group.companyname
         label(for='company') 주최사
-        input.form-control(type='text', id='company', name='company' ,placeholder='company name')
+        input.form-control(type='text', id='company', name='company',value=contest.company ,placeholder='company name')
       .form-group
         label(for='manager') 담당자 이름
-        input.form-control(type='text', id='manager', name='manager' , placeholder='Your name')
+        input.form-control(type='text', id='manager', name='manager',value=contest.manager , placeholder='Your name')
       .form-group
         label(for='email') 당담자 이메일
-        input.form-control(type='email', id='email', name='email' , placeholder='Email')
+        input.form-control(type='email', id='email', name='email' ,value=contest.email, placeholder='Email')
       .form-group 
         label(for='phone') 담당자 전화번호
-        input.form-control(type='phone', id='phone', name='phone', placeholder=" - 를 꼭 써주세요!")
+        input.form-control(type='phone', id='phone', name='phone',value=contest.phone, placeholder=" - 를 꼭 써주세요!")
       .form-group
         label(for='startdate') 공모전 응시 기간
-        input.form-control(type='date', id='startdate', name='startdate')
+        input.form-control(type='date', id='startdate', name='startdate',value= moment(contest.startdate).format('YYYY-MM-DD'))
         |
         | ~
       .form-group
         label(for='enddate') 
-        input.form-control(type='date', id='enddate', name='enddate')
+        input.form-control(type='date', id='enddate', name='enddate', value= moment(contest.enddate).format('YYYY-MM-DD'))
     
       .form-group
         label(for='address') 위치
-        input.form-control(type='text', id='address', name='address', placeholder='주소 전체를 정확하게 기입하세요')      
+        input.form-control(type='text', id='address', name='address',value=contest.address, placeholder='주소 전체를 정확하게 기입하세요')      
         
 
       -var fields = ['기획/아이디어', '광고/마케팅', '논문/리포트', '영상/UCC/사진', '디자인/캐릭터/웹툰', '웹/모바일/플래시', '게임/소프트웨어', '과학/공학', '문학/글/시나리오', '건축/건설/인테리어', '네이밍/슬로건', '예체능/미술/음악', '대외활동/서포터즈', '봉사활동' , '취업/창업', '해외', '기타'];
@@ -42,16 +42,26 @@ block content
         label(for= 'field') 공모전 분야 
         br
         each field in fields
-          input(type='checkbox' name= "field", value= field )
-          |       
-          |  #{field}
+          if (contest.field.indexOf(field) == -1) 
+            input(type='checkbox' name= "field", value= field)
+            |       
+            |  #{field}
+          else
+            input(type='checkbox' name= "field", value= field checked)
+            |       
+            |  #{field}
       .form-group
         label(for = "target") 응시대상자
         br
         each target in targets
-          input(type='checkbox' name= "target", value= target )
-          |
-          | #{target}
+          if (contest.target.indexOf(target)== -1)
+            input(type='checkbox' name= "target", value= target )
+            |
+            | #{target}
+          else 
+            input(type='checkbox' name= "target", value= target checked)
+            |
+            | #{target}
       .form-group
         label(for='img') 공모전 이미지 첨부
         input.form-control(type='file', name='img')

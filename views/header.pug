@@ -9,8 +9,6 @@ header
         p.fa-pull-right #{currentUser.auth} 
         p.fa-pull-right /  
         a(href="/logout", title="logout").fa-pull-right 로그아웃   
-        p.fa-pull-right /  
-        a(href=`/users/${currentUser._id}/favorite`, title="favorite").fa-pull-right 즐겨찾기 목록
       else
         a(href="/users/create", title="create").fa-pull-right 회원가입 
         p.fa-pull-right /  
