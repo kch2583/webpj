@@ -5,8 +5,22 @@ body {
 a {
   color: #00B7FF; }
 
-.companyname{
-  display:none;
+#details1 {
+  margin-top: 1.2em;
 }
 
+h5.map { 
+  margin-top : 100px;
+}
+
+.comment_form_create {
+  margin: 50px 0px;
+}
+
+.comment.card{
+  margin: 30px 0px;
+}
+.btn {
+  margin : 5px;
+}
 /*# sourceMappingURL=style.css.map */

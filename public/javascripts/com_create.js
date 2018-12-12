@@ -1,21 +1,14 @@
 $(function(){
-  $('#company1').click(function(){
-    $('.companyname').show();
-  })
-  $('#normal').click(function(){
-    $('.companyname').hide();
-  })
-
   $('#summernote').summernote({
     placeholder: '세부사항을 입력하십시오',
     lang: 'ko-KR',
     tabsize: 2,
     height: 300,                 // set editor height
     minHeight: null,             // set minimum height of editor
-    maxHeight: null             // set maximum height of edito
+    maxHeight: null
   });
   
-  $('#comment_form').submit(function() {
+  $('#create_contest').submit(function() {
     $(this).ajaxSubmit({
       error: function(xhr) {
         status('Error: ' + xhr.status);
@@ -34,3 +27,15 @@ $(function(){
 
 
 })
+
+function chkCaptcha() {
+  if (typeof(grecaptcha) != 'undefined') {
+     if (grecaptcha.getResponse() == "") {
+         alert("스팸방지코드를 확인해 주세요.");
+         return false;
+     }
+  }
+  else {
+       return false;
+  }
+}

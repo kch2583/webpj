@@ -5,12 +5,12 @@ block content
   .container
     if (currentUser)
       if (currentUser.auth =="admin")
-        a(href="/admin/user_edit", title="user_mgt") user 관리
+        a(href="/admin/users_edit", title="user_mgt") user 관리
         br
-        a(href="/admin/contest_edit", title="contest_mgt") 공모전 관리
+        a(href="/admin/contests_edit", title="contest_mgt") 공모전 관리
         br
         a.btn.btn-primary(href='/admin/create') #[i.fa.fa-plus] admin 계정 만들기
-      else if(currentUser.auth =="normal" || currentUser.auth == "company")
+      else if(currentUser.auth =="normal")
         include ./includes/table_con
     else 
       include ./includes/table_con

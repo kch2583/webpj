@@ -3,12 +3,13 @@ var mongoose = require('mongoose'),
 const mongoosePaginate = require('mongoose-paginate');
 
 var contestschema = new Schema({
-  title: {type: String, required:true, trim: true,index:true ,unique: true},
+  title: {type: String, required:true, trim: true},
   company: {type: String, trim: true},
   author : { type: Schema.Types.ObjectId, ref: 'user' },
   field : [String],
   target: [String],
   reader : [String],
+  email: {type: String},
   manager: {type:String, required:true,trim:true},
   phone: {type: String, required:true },
   details : {type: String, required:true},

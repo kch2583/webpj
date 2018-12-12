@@ -1,0 +1,8 @@
+extends ../layout
+
+
+block content
+  .container
+    if (currentUser.auth =="normal")
+        include ../includes/table_con
+  

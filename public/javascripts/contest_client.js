@@ -178,7 +178,6 @@ $(function() {
   //공모전 즐겨찾기 버튼 클릭시
   $('.contest-favorite-btn').click( function(e) {
     var $el = $(e.currentTarget);
-
     if ($el.hasClass('clicked') === true) {
       $.ajax({
         url: '/api/contest/' + $el.data('id') + '/notfavorite',
@@ -203,13 +202,13 @@ $(function() {
       $.ajax({
         url: '/api/contest/' + $el.data('id') + '/favorite',
         method: 'POST',
+       
         dataType: 'json',
         success: function(data) {
           
           $('#favorite').removeClass('far');
           $('#favorite').addClass('fas');
           $el.addClass('clicked');
-          alert('즐겨찾기에 등록되었습니다.');
         },
         error: function(data, status) {
           if (data.status == 401) {
@@ -217,10 +216,14 @@ $(function() {
             location = '/login';
           }
           console.log(data, status);
+        },
+        complete: function(data){
+          alert('즐겨찾기에 등록이 되었습니다.');
         }
       });
     }
   }); 
+  
 
 
 

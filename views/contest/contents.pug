@@ -2,52 +2,74 @@ extends ../layout
 
 block content
   .container.contest
-    h1.title #{contest.title}
+    .contest-header.row
+      h1.title #{contest.title}
+      ul.list-inline
+      if currentUser !== contest.author 
+        a.btn.btn-sm.btn-outline-secondary(href=`/contest/${contest._id}/edit`) 
+          | #[i.fa.fa-pencil] Edit
+        | 
+        a.btn.btn-sm.btn-outline-danger(href=`/contest/${contest._id}?_method=DELETE`)
+          | #[i.fa.fa-trash] Delete
 
-    if currentUser !== contest.author 
-      a.btn.btn-sm.btn-outline-secondary(href=`/contest/${contest._id}/edit`) 
-        | #[i.fa.fa-pencil] Edit
-      | 
-      a.btn.btn-sm.btn-outline-danger(href=`/contest/${contest._id}?_method=DELETE`)
-        | #[i.fa.fa-trash] Delete
+      .col-sm-12
+        .buttons
+          a(href=`https://www.facebook.com/sharer/sharer.php?s=100&p[url]=https://pacific-plateau-16529.herokuapp.com/contest/${contest._id}` target=_blank display="popup")
+            span #[i.fa.fa-thumbs-up] Share
+          button.btn.btn-primary.contest-like-btn#likebutton(data-id=contest._id) 
+            span #[i.fa.fa-thumbs-up] Like
+          button.btn.btn-primary.contest-hate-btn#hatebutton(data-id=contest._id) 
+            span #[i.fa.fa-thumbs-down] Hate
+          button.btn.btn-primary.contest-favorite-btn(data-id=contest.id) 
+            span #[i.far.fa-star#favorite] Favorite
+        .numbers.contest.
+          #[span.number.num-likes= contest.numLikes] likes,
+          #[span.number.num-hates= contest.numHates] hates,
+          #[span.number.num-comments= contest.numcomments] comments,
+          #[span.number.num-reads= contest.numReads] reads
+    hr   
 
-    .col-sm
-      .buttons
-        button.btn.btn-primary.contest-share-btn#sharebutton(data-id=contest._id, href="https://www.facebook.com/sharer/sharer.php?s=100&p[url]=https://naver.com") 
-        a(href=`https://www.facebook.com/sharer/sharer.php?s=100&p[url]=https://` target=_blank display="popup")
-          span #[i.fa.fa-thumbs-up] Share
-        button.btn.btn-primary.contest-like-btn#likebutton(data-id=contest._id) 
-          span #[i.fa.fa-thumbs-up] Like
-        button.btn.btn-primary.contest-hate-btn#hatebutton(data-id=contest._id) 
-          span #[i.fa.fa-thumbs-down] Hate
-        button.btn.btn-primary.contest-favorite-btn(data-id=contest.id) 
-          span #[i.fas.fa-star#favorite] Favorite
-      .numbers.contest.
-        #[span.number.num-likes= contest.numLikes] likes,
-        #[span.number.num-hates= contest.numHates] hates,
-        #[span.number.num-comments= contest.numcomments] comments,
-        #[span.number.num-reads= contest.numReads] reads
+    .row.justify-content-center
+      .col-md-5.offset-md-1
+        if contest.img 
+          img.img-fluid(src=contest.img)
+      
+      .col-md-6
+        table.table
+          tbody
+            tr
+              th 주최사
+              td.sub#mapscomname #{contest.company} 
+            tr
+              th 당담자
+              td #{contest.manager}
+            tr
+              th 당담자 전화번호
+              td  #{contest.phone}
+            tr
+              th 이메일
+              td #{contest.email}
+            tr
+              th 공모 기간
+              td= moment(contest.startdate).format('YYYY-MM-DD') + ' ~ ' + moment(contest.enddate).format('YYYY-MM-DD')
+            tr
+              th 공모 분야
+              td #{contest.field}
+            tr
+              th 응시 대상
+              td #{contest.target}
 
-
-    .sub#mapscomname #{contest.company} 
+      .details#details1 #{contest.details}
     
-    .date= moment(contest.startdate).format('YYYY-MM-DD') + ' ~ ' + moment(contest.enddate).format('YYYY-MM-DD')
-    .info 담당자 :  #{contest.manager}   전화번호 :  #{contest.phone}
-    .field 공모 분야 :  #{contest.field}
-    .target 응시 대상 :  #{contest.target}
+      
+      .row.justify-content-center
+        .col
+          h5.map 위치
+          .address#maps(style="display:none;") #{contest.address} 
+          div#map(style="width:500px;height:400px;") 
 
 
-    if contest.img 
-      img.img-fluid(src=contest.img)
-    //- .details#details1 #{contest.details}
-    .details#details1 #{contest.details}
-    
-    h3.map 위치
-    .address#maps(style="display:none;") #{contest.address} 
-    div#map(style="width:500px;height:400px;") 
-
-
-    form(action=`/contest/${contest.id}/comments`, method='POST')
+    form.comment_form_create(action=`/contest/${contest.id}/comments`, method='POST')
       .form-group
         label(for='comments') 댓글
         textarea.form-control(name="content", rows="5", placeholder="댓글 달기")

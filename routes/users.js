@@ -64,15 +64,10 @@ router.get('/', catchErrors(async (req, res, next) => {
   res.render('admin/index', {users:users, query: req.query});
 }));
 
-/* GET users listing. */
-// router.get('/', needAuth, catchErrors(async(req,res,next)=>{
-//   const users = await User.find({});
-//   res.render('admin/index', {users: users});
-// }))
 
 //회원가입을 클릭했을 때
 router.get('/create', function(req,res,next){
-  res.render('users/create', {messages: req.flash('hi')});
+  res.render('users/create');
 });
 
 //회원가입 폼을 입력하고 제출했을 때
@@ -96,20 +91,20 @@ router.post('/create', catchErrors(async (req,res,next)=>{
   user.password = await user.generateHash(req.body.password);
  
   await user.save();
-  req.flash('success', '로그인에 성공하였습니다.');
+  req.flash('success', '회원가입에 성공하였습니다.');
   res.redirect('/');
 }))
 
 // user 삭제
 router.delete('/:id', needAuth, catchErrors(async(req,res,next)=>{
-  var Userid = findOneAndRemove({_id:req.params.id});
+  var Userid = await findOneAndRemove({_id:req.params.id});
   req.flash('success', 'Deleted Successfully!');
   res.redirect('/users');
 }))
 
 //edit 버튼을 눌렀을 때 
 router.get('/:id/edit', needAuth, catchErrors(async(req,res,next)=>{
-  var user = User.findById(req.params.id);
+  var user = await User.findById(req.params.id);
   res.render('users/edit', {user: user});
 }))
 
@@ -143,11 +138,13 @@ router.put('/:id/edit', needAuth, catchErrors(async(req,res,next)=> {
 
 router.get('/:id/favorite',needAuth ,catchErrors(async(req,res,next)=>  {  
   // var favorites = await Favorite.find({author :req.params.id});
-  var user = await User.findById(req.params.id);
-  var contests = await Contest.find({_id: {$in:[ user.favorites ]} });
-  // {$in:[favorites.favorites]}
-  console.log(user.favorites, contests._id);
+ 
   
+  var user = await User.findById(req.params.id);
+  console.log(user.favorites);
+  var contests = await Contest.findById( {$in:[ user.favorites ]});
+  // {$in:[favorites.favorites]}
+ 
   res.render('users/favorite', {contests:contests});
 }));
 
@@ -158,7 +155,12 @@ router.get('/favorite', catchErrors(async(req,res,next)=>  {
   }
 }));
 
-
+router.get('/edit', catchErrors(async(req,res,next)=>  {
+  if(!req.user){
+  req.flash('danger', '로그인이 필요합니다.');
+  res.redirect('/login');
+  }
+}));
 
 
 module.exports = router;

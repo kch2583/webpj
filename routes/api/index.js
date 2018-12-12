@@ -176,8 +176,10 @@ router.post('/contest/:id/favorite', catchErrors(async (req, res, next) => {
   }
   else{
     var user = await User.findById(req.user.id);
+    if (user.favorites.indexOf(contest._id) == -1){ 
     await user.favorites.push(contest._id);
-
+    console.log(user._id,  user.favorites);
+    }
     await user.save();
     return res.json(contest);
   }

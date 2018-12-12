@@ -1,6 +1,7 @@
 extends ../layout
 
 block content
+  script(src="../javascripts/admin_authChange.js")
   .container
     h1.main-title Users
     
@@ -10,18 +11,31 @@ block content
           th Name
           th Email
           th Created At
+          th auth
           th
+          th 관리자 권한 주기
       tbody
         each user in users
           tr
             td
-              a(href=`/admin/${user._id}`)= user.name
+              a(href=`/admin/user/${user._id}`)= user.name
             td= user.email
             td= moment(user.createdAt).format('YYYY-MM-DD HH:mm:ss')
+            td= user.auth
             td
-              a.btn.btn-sm.btn-outline-secondary(href=`/admin/${user._id}/edit`) 
+              a.btn.btn-sm.btn-outline-secondary(href=`/admin/user/${user._id}/edit`) 
                 | #[i.fa.fa-pencil] Edit
               | 
-              a.btn.btn-sm.btn-outline-danger(href=`/admin/${user._id}?_method=DELETE`)
+              a.btn.btn-sm.btn-outline-danger(href=`/admin/user/${user._id}?_method=DELETE`)
                 | #[i.fa.fa-trash] Delete
+            if user.auth=='admin'
+              td
+                a.btn.btn-sm.auth-check(data-id=user._id) 
+                  | #[i.fas.fa-square#userAuthCheck] 
+            else 
+              td
+                a.btn.btn-sm.auth-check(data-id=user._id) 
+                  | #[i.far.fa-square#userAuthCheck] 
     a.btn.btn-primary(href='/admin/create') #[i.fa.fa-plus] admin 계정 만들기
+
+

@@ -4,13 +4,13 @@ block content
   .container.create_form
   
     h1.main-title 공모전 수정하기
-    form(action=`/contest/${contest._id}/edit?_method=PUT`,id="comment_form", method='POST',onsubmit="postForm()" ,enctype="multipart/form-data")
+    form(action=`/contest/${contest._id}/edit?_method=PUT`,id="create_contest", method='POST',onsubmit="postForm()" ,enctype="multipart/form-data")
       .form-group
         label(for='title') 공모전 이름
         input.form-control(type='text', id='contest_title', name='title',value=contest.title,placeholder='title')
-      .form-group.companyname
-        label(for='company') 주최사
-        input.form-control(type='text', id='company', name='company',value=contest.company ,placeholder='company name')
+      .form-group
+        label(for='companyname') 주최사
+        input.form-control(type='text', id='companyname', name='companyname',value=contest.company ,placeholder='company name')
       .form-group
         label(for='manager') 담당자 이름
         input.form-control(type='text', id='manager', name='manager',value=contest.manager , placeholder='Your name')

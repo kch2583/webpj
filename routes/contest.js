@@ -13,7 +13,7 @@ function needAuth(req, res, next) {
   if (req.isAuthenticated()) {
     next();
   } else {
-    req.flash('danger', 'Please signin first.');
+    req.flash('danger', '로그인을 먼저 해주세요!');
     res.redirect('/login');
   }
 }
@@ -43,29 +43,16 @@ router.get('/create',needAuth, function(req, res, next){
 router.post('/create', needAuth, 
   upload.single('img'), // img라는 필드를 req.file로 저장함.
   catchErrors(async (req, res, next) => {
-    //recaptcha
-    if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null) {
-      return res.json({"responseCode" : 1,"responseDesc" : "Please select captcha"});
-    }
 
-    var secretKey = "6LeFtn4UAAAAAHbEP248K1sNDemD4IYNp2by5aei";
-    var verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=" + secretKey + "&response=" + req.body['g-recaptcha-response'] + "&remoteip=" + req.connection.remoteAddress;
 
-    request(verificationUrl,function(error,response,body) {
-      body = JSON.parse(body);
-    
-      if(body.success !== undefined && !body.success) {
-        return res.json({"responseCode" : 1,"responseDesc" : "Failed captcha verification"});
-      }
-      res.json({"responseCode" : 0,"responseDesc" : "Sucess"});
-    });
-
+  // var user = await User.findById(req.user._id);
   var contest = new Contest({
     title: req.body.title,
-    company: req.body.company,
+    company: req.body.companyname,
     field: req.body.field,
     target: req.body.target,
     manager: req.body.manager,
+    email: req.body.email,
     phone: req.body.phone,
     address : req.body.address,
     details: req.body.content ,
@@ -82,8 +69,8 @@ router.post('/create', needAuth,
   }
   
   await contest.save();
-  req.flash('success', 'Successfully posted');
-  res.render('/');
+  req.flash('success', '성공적으로 등록되었습니다.');
+  res.redirect('/');
 }));
 
 //본인이 작성한 공모전 보기
@@ -123,7 +110,7 @@ router.put('/:id/edit', needAuth,upload.single('img'), catchErrors(async(req,res
   }
 
   contest.title =req.body.title;
-  contest.company= req.body.comname;
+  contest.company= req.body.companyname;
   contest.field= req.body.field;
   contest.target= req.body.target;
   contest.manager= req.body.manager;
@@ -142,15 +129,16 @@ router.put('/:id/edit', needAuth,upload.single('img'), catchErrors(async(req,res
   }
   
   await contest.save();
-  req.flash('success', 'Successfully updated');
-  res.redirect('/contents');
+  req.flash('success', '성공적으로 수정되었습니다.');
+  res.redirect('/');
 }));
 
 router.delete('/:id', needAuth, catchErrors(async (req, res, next) => {
   await Contest.findOneAndRemove({_id: req.params.id});
-  req.flash('success', 'Successfully deleted');
-  res.redirect('/contents');
+  req.flash('success', '성공적으로 삭제되었습니다.');
+  res.redirect('/');
 }));
+
 
 router.get('/map', (req,res,next)=>{
   var address = req.query.address;

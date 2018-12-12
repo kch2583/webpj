@@ -2,16 +2,36 @@ var express = require('express');
 var router = express.Router();
 var User  = require("../models/user");
 var catchErrors = require('../lib/async-error');
+var Contest =require('../models/contest');
+var fs = require('fs-extra');
+var path = require('path');
+var multer = require('multer');
 
 //로그인 여부
 function needAuth(req, res, next) {
-  if (user.auth == 'auth') {
+  if (req.isAuthenticated()) {
     next(); 
   } else {
     req.flash('danger', '먼저 로그인을 해주세요');
     res.redirect('admin/adminpw');
   }
 };
+
+const mimetypes = {
+  "image/jpeg": "jpg",
+  "image/gif": "gif",
+  "image/png": "png"
+};
+const upload = multer({
+  dest: 'tmp', 
+  fileFilter: (req, file, cb) => {
+    var ext = mimetypes[file.mimetype];
+    if (!ext) {
+      return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+  }
+});
 
 function validateForm(form, options) {
   var name = form.name || "";
@@ -43,12 +63,12 @@ function validateForm(form, options) {
 }
 
 // /* GET users listing. */
-router.get('/users',needAuth, catchErrors(async(req,res,next)=>{
+router.get('/users_edit',needAuth, catchErrors(async(req,res,next)=>{
   const users = await User.find({});
   res.render('admin/users', {users: users});
 }))
 
-router.get('/contest',needAuth, catchErrors(async(req,res,next)=>{
+router.get('/contests_edit',needAuth, catchErrors(async(req,res,next)=>{
   const contests = await Contest.find({});
   res.render('admin/contest', {contests: contests});
 }))
@@ -83,20 +103,22 @@ router.post('/create', catchErrors(async (req,res,next)=>{
   res.redirect('/admin/index');
 }));
 
-router.delete('/:id', needAuth, catchErrors(async(req,res,next)=>{
-  var Userid = findOneAndRemove({_id:req.params.id});
+router.delete('/user/:id', needAuth, catchErrors(async(req,res,next)=>{
+  var Userid = await User.findOneAndRemove({_id:req.params.id});
   req.flash('success', 'Deleted Successfully!');
   res.redirect('/users');
 }))
 
 //edit 버튼을 눌렀을 때 
-router.get('/:id/edit', needAuth, catchErrors(async(req,res,next)=>{
-  var user = User.findById(req.params.id);
+router.get('/user/:id/edit', needAuth, catchErrors(async(req,res,next)=>{
+  var user = await User.findById(req.params.id);
+  console.log(user, req.params.id);
+  
   res.render('users/edit', {user: user});
 }))
 
 //edit 
-router.put('/:id/edit', needAuth, catchErrors(async(req,res,next)=> {
+router.put('/user/:id/edit', needAuth, catchErrors(async(req,res,next)=> {
   var err = validateForm(req.body);
   if(err){
     req.flash('danger', err);
@@ -123,5 +145,73 @@ router.put('/:id/edit', needAuth, catchErrors(async(req,res,next)=> {
   res.redirect('/users/index');
 }))
 
+router.delete('/contest/:id', needAuth, catchErrors(async(req,res,next)=>{
+  var contest = await Contest.findOneAndRemove({_id:req.params.id});
+  req.flash('success', '성공적으로 삭제했습니다.!');
+  res.redirect('/users');
+}))
+
+// contest edit 버튼을 눌렀을 때 
+router.get('/contest/:id/edit', needAuth, catchErrors(async(req,res,next)=>{
+  var contest = await Contest.findById(req.params.id);
+  
+  res.render('contest/edit_contest', {contest:contest});
+}))
+
+// admin contest edit
+router.put('/contest/:id/edit', needAuth, catchErrors(async(req,res,next)=> {
+  var err = validateForm(req.body);
+  if(err){
+    req.flash('danger', err);
+    return res.redirect('back');
+  }
+  const contest = await Contest.findById({_id: req.params.id});
+  if (!contest) {
+    req.flash('danger', '존재하지 않는 공모전입니다.');
+    return res.redirect('back');
+  }
+  contest.title =req.body.title;
+  contest.company= req.body.companyname;
+  contest.field= req.body.field;
+  contest.target= req.body.target;
+  contest.manager= req.body.manager;
+  contest.phone= req.body.phone;
+  contest.address= req.body.address;
+  contest.details= req.body.content ;
+  contest.startdate= req.body.startdate;
+  contest.enddate= req.body.enddate;
+
+  if (req.file) {
+    const dest = path.join(__dirname, '../public/images/uploads/');  // 옮길 디렉토리
+    console.log("File ->", req.file); // multer의 output이 어떤 형태인지 보자.
+    const filename = contest.id + "/" + req.file.originalname;
+    await fs.move(req.file.path, dest + filename);
+    contest.img = "/images/uploads/" + filename;
+  }
+  
+  await contest.save();
+  req.flash('success', '성공적으로 수정되었습니다.');
+  res.redirect('/users/index');
+}))
+
+router.post('/userAuthChange/:id/admin',catchErrors(async(req,res,next)=> {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return next({status: 404, msg: 'Not exist contest'});
+  }
+  user.auth = 'admin';
+  await user.save();
+  return res.json(user);
+}))
+
+router.post('/userAuthChange/:id/normal',catchErrors(async(req,res,next)=> {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return next({status: 404, msg: 'Not exist contest'});
+  }
+  user.auth = 'normal';
+  await user.save();
+  return res.json(user);
+}))
 
 module.exports = router;
