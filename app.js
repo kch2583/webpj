@@ -11,7 +11,7 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var favicon = require('serve-favicon');
 var passport = require('passport');
-var FileStore = require('session-file-store')(session);
+//var FileStore = require('session-file-store')(session);
 var passportConfig = require('./lib/passport-config');
 var request = require('request');
 
@@ -63,12 +63,16 @@ app.use(sassMiddleware({
 }));
 
 //session
-//var sessionStore = new session.MemoryStore;  소켓 할때 사용
+const sessionStore = new session.MemoryStore();
+const sessionId = 'mjoverflow.sid';
+const sessionSecret =  'safwefseoifjosief-fsejf-sefjsfvha,m21349529-f9egsdgfjd'
+// session을 사용할 수 있도록.
 app.use(session({
+  name: sessionId,
   resave: true,
   saveUninitialized: true,
-  secret: 'long-long-long-secret-string-1313513tefgwdsvbjkvasd',
-  store: FileStore(),  //sessionStore
+  store: sessionStore,
+  secret: sessionSecret
 }));
 
  //flash 사용  //router보다 더 높이 있어야함
